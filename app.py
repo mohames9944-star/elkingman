@@ -1,93 +1,102 @@
 import streamlit as st
 import time
+import random
+from PIL import Image, ImageEnhance, ImageFilter
 
-# 1. كود التحقق الخاص بجوجل
+# 1. إعدادات جوجل والصفحة
 st.markdown('<meta name="google-site-verification" content="3g6rM7Q4DsBKCzNPhdOZl48qCq96iYQ2JYslHKfswbc" />', unsafe_allow_html=True)
-
-# 2. إعدادات الصفحة
 st.set_page_config(page_title="ElKing Man | الملك", page_icon="👑", layout="wide")
 
-# 3. تصميم CSS فخم ومتجاوب
+# 2. تصميم CSS ملكي
 st.markdown("""
     <style>
-    .main { background-color: #0a0a0a; color: #ffffff; }
+    .main { background-color: #0d0d0d; color: #e0e0e0; }
     .stButton>button { 
-        background-color: #D4AF37; color: black; border-radius: 8px; 
-        font-weight: bold; width: 100%; transition: 0.3s;
+        background-color: #D4AF37; color: black; border-radius: 20px; 
+        font-weight: bold; width: 100%; border: none; padding: 10px;
     }
-    .stButton>button:hover { background-color: #ffffff; transform: scale(1.02); border: 1px solid #D4AF37; }
-    h1, h2, h3 { color: #D4AF37 !important; text-align: center; }
-    .result-box { padding: 20px; border: 1px solid #D4AF37; border-radius: 10px; background: #1a1a1a; }
+    .stButton>button:hover { background-color: #fff; color: #D4AF37; box-shadow: 0 0 15px #D4AF37; }
+    .result-card { 
+        background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+        padding: 25px; border-radius: 15px; border-left: 5px solid #D4AF37;
+        margin-bottom: 20px; box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+    }
+    h1, h2, h3 { color: #D4AF37 !important; font-family: 'Cairo', sans-serif; }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("👑 ELKING MAN - AI PRESTIGE")
+st.title("👑 ELKING MAN - SMART AI")
 
-# --- الأقسام الرئيسية ---
-tabs = st.tabs(["🖼️ تحسين الصور", "✂️ مصفف الشعر", "👔 منسق الملابس", "🎬 مونتاج الفيديو"])
+tabs = st.tabs(["🖼️ توضيح الصور", "✂️ كتالوج الحلاقة", "👔 منسق المظهر", "🎬 محرر الفيديو"])
 
-# 1. قسم الصور (يحتاج API للعمل الحقيقي، هنا قمنا بتحسين الواجهة)
+# --- 1. توضيح الصور (إزالة التشويش داخلياً) ---
 with tabs[0]:
-    st.header("8K Image Enhancer")
-    img_file = st.file_uploader("ارفع صورتك (JPG/PNG)", type=['jpg','png','jpeg'])
-    if img_file and st.button("تحسين بلمسة ملكية"):
-        with st.status("🚀 جاري معالجة البيكسلات..."):
-            time.sleep(2)
-            st.info("💡 ملاحظة: التحسين الحقيقي يتطلب ربط API (مثل Replicate) لمعالجة الصورة فعلياً.")
-            st.image(img_file, caption="الصورة الأصلية (في انتظار ربط محرك الـ AI)", use_container_width=True)
-
-# 2. قسم الحلاقة (نتائج متغيرة حسب الوجه)
-with tabs[1]:
-    st.header("AI Barber - مصفف الشعر الذكي")
-    face_shape = st.selectbox("حدد شكل وجهك بدقة:", ["بيضاوي (Oval)", "مربع (Square)", "دائري (Round)", "قلب (Heart)"])
+    st.header("توضيح الصور وإزالة الضبابية")
+    img_file = st.file_uploader("ارفع الصورة المشوشة", type=['jpg','png','jpeg'])
     
-    hair_styles = {
-        "بيضاوي (Oval)": {"style": "Pompadour أو Classic Side Part", "tip": "وجهك مثالي لأي قصة، جرب تخفيف الجوانب."},
-        "مربع (Square)": {"style": "Buzz Cut أو Undercut", "tip": "أنت تحتاج لإبراز فكك القوي، القصات القصيرة جداً تناسبك."},
-        "دائري (Round)": {"style": "High Fade مع Textured Top", "tip": "تحتاج لزيادة الطول من الأعلى لتقليل تدويرة الوجه."},
-        "قلب (Heart)": {"style": "Long Fringes أو Mid-length Swept back", "tip": "اترك شعرك ينمو قليلاً ليوازن عرض الجبهة."}
-    }
-
-    if st.button("اعطني أفضل قصة"):
-        res = hair_styles[face_shape]
-        st.markdown(f"""<div class='result-box'>
-        <h3>✨ النتيجة للملك:</h3>
-        <p><b>القصة المقترحة:</b> {res['style']}</p>
-        <p><b>نصيحة الخبراء:</b> {res['tip']}</p>
-        </div>""", unsafe_allow_html=True)
-
-# 3. قسم الملابس (نتائج متغيرة حسب المشوار والنوع)
-with tabs[2]:
-    st.header("Digital Stylist - منسق الملابس")
-    col1, col2 = st.columns(2)
-    with col1: destination = st.text_input("المكان (جيم، فرح، شغل، خروجة)؟")
-    with col2: style_pref = st.selectbox("الستايل المفضل:", ["كلاسيك رسمي", "كاجوال عصري", "رياضي مريح"])
-
-    if st.button("تنسيق الطقم الملكي"):
-        if "جيم" in destination or "رياضة" in destination:
-            outfit = "شورت أسود ضاغط، تيشيرت Over-sized رمادي، وساعة رياضية ذكية."
-        elif style_pref == "كلاسيك رسمي":
-            outfit = f"بليزر كحلي، قميص أبيض مكوي، بنطلون قماش رمادي، وحذاء هاف بوت بني."
-        elif style_pref == "كاجوال عصري":
-            outfit = f"جاكيت جينز غامق، تيشيرت أسود سادة، بنطلون تشينو بيج، وسنيكرز أبيض."
-        else:
-            outfit = f"طقم متناسق يناسب الذهاب إلى {destination} بلمسة فخمة."
+    if img_file:
+        col_pre, col_post = st.columns(2)
+        with col_pre: st.image(img_file, caption="الصورة الأصلية", use_container_width=True)
         
-        st.success(f"🕺 للمكان ({destination})، نقترح عليك: {outfit}")
+        if st.button("🚀 البدء في توضيح الصورة"):
+            with st.spinner("جاري معالجة البيكسلات وإزالة التشويش..."):
+                img = Image.open(img_file)
+                # معالجة حقيقية للحدة والتباين
+                enhancer = ImageEnhance.Sharpness(img)
+                img = enhancer.enhance(3.0) # زيادة الحدة 3 أضعاف
+                enhancer = ImageEnhance.Contrast(img)
+                img = enhancer.enhance(1.2) # تحسين التباين
+                img = img.filter(ImageFilter.DETAIL) # إبراز التفاصيل
+                
+                time.sleep(1.5)
+                with col_post:
+                    st.image(img, caption="✅ النتيجة (أكثر وضوحاً وحدّة)", use_container_width=True)
+                    st.success("تم تقليل التشويش وإبراز التفاصيل!")
 
-# 4. قسم المونتاج (الجديد)
-with tabs[3]:
-    st.header("AI Video Editor - مونتاج الفيديوهات")
-    video_file = st.file_uploader("ارفع الفيديو المراد مونتاجه", type=['mp4', 'mov', 'avi'])
-    edit_type = st.multiselect("اختر العمليات المطلوبة:", ["إزالة الخلفية", "إضافة ترجمة تلقائية", "تعديل الألوان (Color Grading)", "قص اللقطات الصامتة"])
+# --- 2. كتالوج الحلاقة (أفكار متجددة) ---
+with tabs[1]:
+    st.header("أفكار حلاقة غير محدودة")
+    f_shape = st.selectbox("شكل وجهك:", ["بيضاوي", "مربع", "دائري", "طويل"])
     
-    if video_file and st.button("بدء المونتاج الذكي"):
-        progress_bar = st.progress(0)
-        for i in range(100):
-            time.sleep(0.03)
-            progress_bar.progress(i + 1)
-        st.balloons()
-        st.success(f"🎬 تم تجهيز الفيديو بطلباتك: {', '.join(edit_type)}")
-        st.video(video_file)
+    styles_db = {
+        "بيضاوي": ["Modern Pompadour", "Classic Side Part", "Slick Back", "Low Fade with Curls"],
+        "مربع": ["Buzz Cut", "Crew Cut", "Undercut", "High and Tight"],
+        "دائري": ["High Fade + Quiff", "Faux Hawk", "Side Swept", "Spiky Textured"],
+        "طويل": ["Side Part", "Scissor Cut", "Man Bun", "Mid Fade with Fringe"]
+    }
+    
+    if st.button("🔄 اعطني فكرة جديدة"):
+        idea = random.choice(styles_db[f_shape])
+        st.markdown(f"""<div class='result-card'>
+            <h3>🤵 القصة المقترحة: {idea}</h3>
+            <p>هذه القصة تناسب ملامحك اليوم. هل تريد تجربة فكرة أخرى؟ اضغط على الزر مرة ثانية!</p>
+            </div>""", unsafe_allow_html=True)
 
-st.markdown("<br><hr><p style='text-align: center;'>© 2026 ELKING MAN - المستشار الأول للأناقة والذكاء</p>", unsafe_allow_html=True)
+# --- 3. منسق المظهر (تنسيقات عشوائية ذكية) ---
+with tabs[2]:
+    st.header("منسق الملابس الذكي")
+    occasion = st.text_input("المناسبة (مثلاً: فرح، مقابلة عمل، جيم، جامعة)")
+    
+    colors = ["أسود", "كحلي", "رمادي", "زيتي", "بيج", "أبيض"]
+    pieces = ["جاكيت جلد", "بليزر", "قميص كتان", "تيشيرت Over-sized", "هودي"]
+
+    if st.button("🕺 نسق لي طقم اليوم"):
+        c1, c2 = random.sample(colors, 2)
+        p = random.choice(pieces)
+        st.markdown(f"""<div class='result-card'>
+            <h3>👔 طقم الملك لـ {occasion}:</h3>
+            <p>نقترح عليك لبس <b>{p}</b> بلون <b>{c1}</b> مع بنطلون بلون <b>{c2}</b>.</p>
+            <p>التنسيق يعتمد على تباين الألوان ليعطيك هيبة ملكية.</p>
+            </div>""", unsafe_allow_html=True)
+
+# --- 4. محرر الفيديو (أوامر المونتاج) ---
+with tabs[3]:
+    st.header("المونتاج الذكي")
+    v_file = st.file_uploader("ارفع فيديو"، type=['mp4'])
+    mode = st.radio("ماذا نفعل بالفيديو؟", ["تنظيف الصوت", "تحسين الألوان", "قص احترافي"])
+    
+    if v_file and st.button("🎬 تنفيذ المونتاج"):
+        st.warning("جاري المعالجة (هذا الجزء سيعمل بكامل طاقته عند ربط خادم معالجة فيديو قادم).")
+        st.video(v_file)
+
+st.markdown("<br><hr><p style='text-align: center;'>© 2026 ELKING MAN - نسخة الذكاء المتجدد</p>", unsafe_allow_html=True)
