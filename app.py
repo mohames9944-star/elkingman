@@ -4,7 +4,7 @@ import random
 from PIL import Image, ImageEnhance, ImageFilter
 
 # 1. إعدادات جوجل والصفحة (مهمة للأرشفة)
-st.markdown('<meta name="google-site-verification" content="3g6rM7Q4DsBKCzNPhdOZl48qCq96iYQ2JYslHKfswbc" />', unsafe_allow_html=True)
+<meta name="google-site-verification" content="3g6rM7Q4DsBKCzNPhdOZl48qCq96iYQ2JYslHKfswbc" />
 st.set_page_config(page_title="ElKing Man | الملك", page_icon="👑", layout="wide")
 
 # 2. تصميم CSS ملكي
