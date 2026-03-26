@@ -3,12 +3,13 @@ import time
 import random
 from PIL import Image, ImageEnhance, ImageFilter
 
-# 1. إعدادات التحقق والصفحة (تم تصحيح الخطأ اللي في الصورة)
-# السطر اللي جاي ده هو اللي بيخلي جوجل يشوف موقعك بس مكتوب بطريقة برمجية صح
+# 1. إثبات الملكية لجوجل (السطر اللي بعته وضعتُه هنا بشكل صحيح برمجياً)
 st.markdown('<meta name="google-site-verification" content="3g6rM7Q4DsBKCzNPhdOZl48qCq96iYQ2JYslHKfswbc" />', unsafe_allow_html=True)
-st.set_page_config(page_title="ElKing Man", page_icon="👑", layout="wide")
 
-# 2. تصميم CSS ملكي
+# 2. إعدادات الصفحة
+st.set_page_config(page_title="ElKing Man | الملك", page_icon="👑", layout="wide")
+
+# 3. تصميم الستايل (الأسود والذهبي)
 st.markdown("""
     <style>
     .main { background-color: #0d0d0d; color: #e0e0e0; }
@@ -24,39 +25,39 @@ st.markdown("""
 
 st.title("👑 ELKING MAN - PRESTIGE AI")
 
-# الأدوات الملكية
+# التبويبات (الأدوات الشغالة)
 tabs = st.tabs(["🖼️ وضوح الصور", "✂️ مصفف الشعر", "👔 منسق الملابس"])
 
-# --- 1. وضوح الصور ---
+# --- أداة الصور ---
 with tabs[0]:
     st.header("توضيح الصور وإزالة التشويش")
-    img_file = st.file_uploader("ارفع الصورة هنا", type=['jpg', 'png', 'jpeg'], key="img_99")
+    img_file = st.file_uploader("ارفع الصورة هنا", type=['jpg', 'png', 'jpeg'], key="img_final")
     if img_file:
         col1, col2 = st.columns(2)
-        with col1: st.image(img_file, caption="قبل المعالجة", use_container_width=True)
+        with col1: st.image(img_file, caption="قبل", use_container_width=True)
         if st.button("🚀 رفع الجودة"):
             img = Image.open(img_file).convert("RGB")
             img = ImageEnhance.Sharpness(img).enhance(5.5)
             img = ImageEnhance.Contrast(img).enhance(1.4)
             img = img.filter(ImageFilter.DETAIL)
             with col2:
-                st.image(img, caption="بعد المعالجة HD", use_container_width=True)
+                st.image(img, caption="بعد HD", use_container_width=True)
                 st.success("تم التحسين!")
 
-# --- 2. مصفف الشعر ---
+# --- أداة الحلاقة ---
 with tabs[1]:
     st.header("كتالوج الحلاقة")
-    f_shape = st.selectbox("شكل الوجه:", ["بيضاوي", "مربع", "دائري", "قلب"], key="hair_99")
+    f_shape = st.selectbox("شكل وجهك:", ["بيضاوي", "مربع", "دائري", "قلب"], key="hair_final")
     h_styles = ["Modern Pompadour", "Classic Slick Back", "Taper Fade", "Textured Quiff"]
     if st.button("🔄 اقتراح قصة"):
         res = random.choice(h_styles)
-        st.markdown(f"<div class='result-card'><h3>🤵 القصة: {res}</h3></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='result-card'><h3>🤵 القصة المقترحة: {res}</h3></div>", unsafe_allow_html=True)
 
-# --- 3. منسق الملابس ---
+# --- أداة الملابس ---
 with tabs[2]:
     st.header("منسق المظهر")
-    st.text_input("المناسبة؟", key="wear_99")
-    if st.button("🕺 نسق الطقم"):
+    st.text_input("المناسبة؟", key="wear_final")
+    if st.button("🕺 نسق لي طقم اليوم"):
         tops = ["بليزر كحلي", "قميص أبيض", "هودي أسود", "جاكيت جلد"]
         bottoms = ["جينز غامق", "قماش رمادي", "كارغو بيج", "أسود كلاسيك"]
         t, b = random.choice(tops), random.choice(bottoms)
