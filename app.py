@@ -1,4 +1,8 @@
 import streamlit as st
+
+# الطريقة دي بتخلي جوجل يشوف الملف وكأنه مرفوع بالظبط
+st.markdown(f'<a href="googlee535fab2955a5c23.html" style="display:none;">Verify</a>', unsafe_allow_html=True)
+import streamlit as st
 import time
 import random
 from PIL import Image, ImageEnhance, ImageFilter
